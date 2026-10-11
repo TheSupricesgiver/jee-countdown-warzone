@@ -1,0 +1,1438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>JEE ZENITH // WARROOM COMMAND CENTER 2027</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Orbitron:wght@500;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        orbitron: ['Orbitron', 'sans-serif'],
+                        space: ['Space Grotesk', 'sans-serif'],
+                        jakarta: ['Plus Jakarta Sans', 'sans-serif'],
+                        fira: ['Fira Code', 'monospace']
+                    },
+                    animation: {
+                        'glitch': 'glitch 1s infinite linear alternate-reverse',
+                        'scanline': 'scanline 8s linear infinite',
+                        'spin-slow': 'spin 12s linear infinite',
+                        'pulse-fast': 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+                    },
+                    keyframes: {
+                        glitch: {
+                            '0%': { transform: 'translate(0)' },
+                            '20%': { transform: 'translate(-2px, 2px)' },
+                            '40%': { transform: 'translate(-2px, -2px)' },
+                            '60%': { transform: 'translate(2px, 2px)' },
+                            '80%': { transform: 'translate(2px, -2px)' },
+                            '100%': { transform: 'translate(0)' }
+                        },
+                        scanline: {
+                            '0%': { transform: 'translateY(-100%)' },
+                            '100%': { transform: 'translateY(1000%)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --accent-primary: #00f0ff;
+            --accent-secondary: #ff007f;
+            --accent-glow: rgba(0, 240, 255, 0.5);
+            --card-bg: rgba(6, 12, 26, 0.85);
+            --card-border: rgba(0, 240, 255, 0.25);
+            --bg-base: #020617;
+        }
+
+        body.theme-cyan {
+            --accent-primary: #00f0ff;
+            --accent-secondary: #3b82f6;
+            --accent-glow: rgba(0, 240, 255, 0.6);
+            --card-bg: rgba(6, 18, 36, 0.85);
+            --card-border: rgba(0, 240, 255, 0.3);
+            --bg-base: #020b14;
+        }
+
+        body.theme-matrix {
+            --accent-primary: #10b981;
+            --accent-secondary: #059669;
+            --accent-glow: rgba(16, 185, 129, 0.6);
+            --card-bg: rgba(4, 24, 16, 0.85);
+            --card-border: rgba(16, 185, 129, 0.3);
+            --bg-base: #01120a;
+        }
+
+        body.theme-magenta {
+            --accent-primary: #ff007f;
+            --accent-secondary: #a855f7;
+            --accent-glow: rgba(255, 0, 127, 0.6);
+            --card-bg: rgba(26, 6, 20, 0.85);
+            --card-border: rgba(255, 0, 127, 0.3);
+            --bg-base: #12020d;
+        }
+
+        body.theme-gold {
+            --accent-primary: #f59e0b;
+            --accent-secondary: #ef4444;
+            --accent-glow: rgba(245, 158, 11, 0.6);
+            --card-bg: rgba(28, 16, 4, 0.85);
+            --card-border: rgba(245, 158, 11, 0.3);
+            --bg-base: #120901;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: #f8fafc;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: background-color 0.5s ease;
+        }
+
+        /* Sci-Fi Glass Panels */
+        .glass-hud {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), inset 0 0 15px rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            position: relative;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .glass-hud:hover {
+            border-color: var(--accent-primary);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.85), 0 0 20px var(--accent-glow);
+        }
+
+        /* Tech Corner Accent Borders */
+        .tech-corners::before, .tech-corners::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-color: var(--accent-primary);
+            pointer-events: none;
+        }
+        .tech-corners::before { top: -1px; left: -1px; border-top: 2px solid; border-left: 2px solid; border-top-left-radius: 8px; }
+        .tech-corners::after { bottom: -1px; right: -1px; border-bottom: 2px solid; border-right: 2px solid; border-bottom-right-radius: 8px; }
+
+        /* Digit Box Glow */
+        .digit-box {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.01) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.6);
+        }
+
+        .text-glow-cyan {
+            text-shadow: 0 0 15px var(--accent-glow), 0 0 30px var(--accent-primary);
+        }
+
+        /* Holographic Scanline Grid Overlay */
+        .scanlines {
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0),
+                rgba(255,255,255,0) 50%,
+                rgba(0, 0, 0, 0.3) 50%,
+                rgba(0, 0, 0, 0.3)
+            );
+            background-size: 100% 4px;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); }
+        ::-webkit-scrollbar-thumb { background: var(--accent-primary); border-radius: 10px; }
+    </style>
+</head>
+<body class="theme-cyan relative select-none">
+
+    <!-- Interactive Dynamic Particle Canvas -->
+    <canvas id="canvasBg" class="fixed inset-0 w-full h-full pointer-events-none z-0"></canvas>
+    
+    <!-- CRT Overlay & CRT Scanline Effect -->
+    <div class="fixed inset-0 scanlines pointer-events-none z-10 opacity-40"></div>
+    <div class="fixed inset-0 bg-gradient-to-t from-black via-transparent to-black/50 pointer-events-none z-10"></div>
+
+    <!-- AUDIO ENGINE CONTROLLER (Web Audio API) -->
+    <script>
+        class AudioEngine {
+            constructor() {
+                this.ctx = null;
+                // Default enabled as requested
+                this.isMuted = false;
+                this.initialized = false;
+                this.ambientOsc = null;
+                this.ambientGain = null;
+            }
+
+            init() {
+                if (!this.ctx) {
+                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                if (this.ctx && this.ctx.state === 'suspended') {
+                    this.ctx.resume();
+                }
+                this.initialized = true;
+            }
+
+            toggleMute() {
+                this.init();
+                this.isMuted = !this.isMuted;
+                if (!this.isMuted) {
+                    this.playLaserClick();
+                    this.startAmbientHum();
+                } else {
+                    this.stopAmbientHum();
+                }
+                return !this.isMuted;
+            }
+
+            playLaserClick() {
+                if (this.isMuted) return;
+                this.init();
+                try {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(1200, this.ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(100, this.ctx.currentTime + 0.05);
+                    gain.gain.setValueAtTime(0.15, this.ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.05);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start();
+                    osc.stop(this.ctx.currentTime + 0.05);
+                } catch(e){}
+            }
+
+            playTensionPulse() {
+                if (this.isMuted) return;
+                this.init();
+                try {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(150, this.ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(40, this.ctx.currentTime + 0.3);
+                    gain.gain.setValueAtTime(0.3, this.ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.3);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start();
+                    osc.stop(this.ctx.currentTime + 0.3);
+                } catch(e){}
+            }
+
+            playAlarm() {
+                if (this.isMuted) return;
+                this.init();
+                try {
+                    for(let i=0; i<3; i++) {
+                        const osc = this.ctx.createOscillator();
+                        const gain = this.ctx.createGain();
+                        osc.type = 'square';
+                        osc.frequency.setValueAtTime(880, this.ctx.currentTime + i * 0.15);
+                        gain.gain.setValueAtTime(0.1, this.ctx.currentTime + i * 0.15);
+                        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + i * 0.15 + 0.1);
+                        osc.connect(gain);
+                        gain.connect(this.ctx.destination);
+                        osc.start(this.ctx.currentTime + i * 0.15);
+                        osc.stop(this.ctx.currentTime + i * 0.15 + 0.1);
+                    }
+                } catch(e){}
+            }
+
+            startAmbientHum() {
+                if (this.isMuted || this.ambientOsc) return;
+                this.init();
+                try {
+                    this.ambientOsc = this.ctx.createOscillator();
+                    this.ambientGain = this.ctx.createGain();
+                    this.ambientOsc.type = 'sine';
+                    this.ambientOsc.frequency.setValueAtTime(55, this.ctx.currentTime);
+                    this.ambientGain.gain.setValueAtTime(0.015, this.ctx.currentTime);
+                    this.ambientOsc.connect(this.ambientGain);
+                    this.ambientGain.connect(this.ctx.destination);
+                    this.ambientOsc.start();
+                } catch(e){}
+            }
+
+            stopAmbientHum() {
+                if (this.ambientOsc) {
+                    try {
+                        this.ambientOsc.stop();
+                        this.ambientOsc.disconnect();
+                    } catch(e){}
+                    this.ambientOsc = null;
+                }
+            }
+        }
+        const audio = new AudioEngine();
+
+        // Browser interaction listener to guarantee default SFX play
+        const enableAudioOnFirstTouch = () => {
+            if (!audio.initialized) {
+                audio.init();
+                if (!audio.isMuted) audio.playLaserClick();
+            }
+            window.removeEventListener('click', enableAudioOnFirstTouch);
+            window.removeEventListener('touchstart', enableAudioOnFirstTouch);
+            window.removeEventListener('keydown', enableAudioOnFirstTouch);
+        };
+        window.addEventListener('click', enableAudioOnFirstTouch);
+        window.addEventListener('touchstart', enableAudioOnFirstTouch);
+        window.addEventListener('keydown', enableAudioOnFirstTouch);
+    </script>
+
+    <!-- HEADER NAVIGATION & HUD SYSTEM CONTROLS -->
+    <header class="relative z-30 w-full px-4 sm:px-8 py-4 border-b border-cyan-500/20 bg-slate-950/70 backdrop-blur-xl flex flex-wrap items-center justify-between gap-4">
+        
+        <!-- Left Title HUD -->
+        <div class="flex items-center space-x-3">
+            <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-pink-500 flex items-center justify-center text-white font-black font-orbitron text-xl shadow-lg shadow-cyan-500/30">
+                <i class="fas fa-crosshairs animate-spin-slow"></i>
+            </div>
+            <div>
+                <h1 class="font-orbitron font-extrabold text-base sm:text-lg tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-200 to-pink-400">
+                    JEE WARROOM ZENITH
+                </h1>
+                <p id="hudTargetTag" class="font-fira text-[11px] text-cyan-400/90 font-semibold tracking-wide">
+                    SYS-TARGET: JEE MAIN 2027 (JAN 22, 2027)
+                </p>
+            </div>
+        </div>
+
+        <!-- Center Directive Banner -->
+        <div class="hidden xl:flex items-center space-x-3 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 font-fira text-xs">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+            <span class="text-gray-300">DIRECTIVE:</span>
+            <span id="headerDirectiveText" class="text-cyan-300 font-bold">AIR TOP 100 RANK LOCK-IN</span>
+        </div>
+
+        <!-- Right System Controls -->
+        <div class="flex items-center flex-wrap gap-2.5 font-space text-xs">
+            
+            <!-- Theme Color Switcher -->
+            <div class="flex items-center bg-black/40 border border-white/15 p-1 rounded-xl">
+                <button onclick="setTheme('cyan')" id="themeBtn-cyan" class="px-2.5 py-1 rounded-lg text-cyan-400 font-bold hover:bg-white/10">Cyan</button>
+                <button onclick="setTheme('matrix')" id="themeBtn-matrix" class="px-2.5 py-1 rounded-lg text-emerald-400 hover:bg-white/10">Matrix</button>
+                <button onclick="setTheme('magenta')" id="themeBtn-magenta" class="px-2.5 py-1 rounded-lg text-pink-400 hover:bg-white/10">Magenta</button>
+                <button onclick="setTheme('gold')" id="themeBtn-gold" class="px-2.5 py-1 rounded-lg text-amber-400 hover:bg-white/10">Gold</button>
+            </div>
+
+            <!-- Audio Toggle (Enabled By Default) -->
+            <button onclick="toggleSFX()" id="sfxBtn" class="px-3 py-1.5 rounded-xl bg-cyan-500/20 border border-cyan-400/40 text-cyan-300 font-fira flex items-center space-x-2 transition">
+                <i id="sfxIcon" class="fas fa-volume-up text-cyan-400 animate-pulse"></i>
+                <span id="sfxLabel" class="hidden sm:inline">SFX: ON</span>
+            </button>
+
+            <!-- Target Exam Settings -->
+            <button onclick="openModal('targetModal')" class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-cyan-500 to-pink-500 text-white font-bold hover:opacity-90 shadow-lg shadow-cyan-500/20 transition flex items-center space-x-1.5">
+                <i class="fas fa-sliders-h"></i>
+                <span>TARGET</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN INTERACTIVE SPACE STATION DISPLAY -->
+    <main class="relative z-20 w-full max-w-7xl mx-auto px-4 py-6 sm:py-8 space-y-8">
+
+        <!-- 1. PRIMARY COUNTDOWN TICKER HUD -->
+        <section class="glass-hud p-6 sm:p-10 text-center tech-corners overflow-hidden">
+            
+            <!-- Target Title Header -->
+            <div class="mb-6 space-y-2">
+                <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-400/30 text-xs font-fira text-cyan-300">
+                    <i class="fas fa-shield-alt text-pink-400"></i>
+                    <span>WARROOM TACTICAL TIMELINE</span>
+                </div>
+                <h2 id="mainTargetTitle" class="font-orbitron font-black text-3xl sm:text-5xl md:text-6xl tracking-tight text-white text-glow-cyan uppercase">
+                    JEE MAIN 2027 T-MINUS
+                </h2>
+            </div>
+
+            <!-- COUNTDOWN DIGITS GRID -->
+            <div class="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-6 max-w-5xl mx-auto my-6">
+                
+                <!-- Days -->
+                <div class="digit-box p-5 sm:p-6 flex flex-col items-center justify-center">
+                    <span class="font-space text-xs font-bold tracking-widest text-cyan-300 uppercase mb-2">DAYS</span>
+                    <span id="countDays" class="font-orbitron font-black text-4xl sm:text-6xl text-white text-glow-cyan">000</span>
+                    <span class="font-fira text-[10px] text-gray-400 mt-2 uppercase">[ SOLITARY CYCLES ]</span>
+                </div>
+
+                <!-- Hours -->
+                <div class="digit-box p-5 sm:p-6 flex flex-col items-center justify-center">
+                    <span class="font-space text-xs font-bold tracking-widest text-cyan-300 uppercase mb-2">HOURS</span>
+                    <span id="countHours" class="font-orbitron font-black text-4xl sm:text-6xl text-white text-glow-cyan">00</span>
+                    <span class="font-fira text-[10px] text-gray-400 mt-2 uppercase">[ HOURS LEFT ]</span>
+                </div>
+
+                <!-- Minutes -->
+                <div class="digit-box p-5 sm:p-6 flex flex-col items-center justify-center">
+                    <span class="font-space text-xs font-bold tracking-widest text-cyan-300 uppercase mb-2">MINUTES</span>
+                    <span id="countMins" class="font-orbitron font-black text-4xl sm:text-6xl text-white text-glow-cyan">00</span>
+                    <span class="font-fira text-[10px] text-gray-400 mt-2 uppercase">[ MINS REMAINING ]</span>
+                </div>
+
+                <!-- Seconds -->
+                <div class="digit-box p-5 sm:p-6 flex flex-col items-center justify-center">
+                    <span class="font-space text-xs font-bold tracking-widest text-cyan-300 uppercase mb-2">SECONDS</span>
+                    <span id="countSecs" class="font-orbitron font-black text-4xl sm:text-6xl text-white text-glow-cyan">00</span>
+                    <span class="font-fira text-[10px] text-gray-400 mt-2 uppercase">[ LIVE SECONDS ]</span>
+                </div>
+
+                <!-- Milliseconds -->
+                <div class="digit-box p-5 sm:p-6 flex flex-col items-center justify-center col-span-2 lg:col-span-1 border-pink-500/40 bg-pink-500/10">
+                    <span class="font-space text-xs font-bold tracking-widest text-pink-400 uppercase mb-2">MILLISECONDS</span>
+                    <span id="countMS" class="font-orbitron font-black text-3xl sm:text-5xl text-pink-300">000</span>
+                    <span class="font-fira text-[10px] text-pink-400/80 mt-2 uppercase">[ HIGH PRECISION ]</span>
+                </div>
+
+            </div>
+
+            <!-- PREPARATION PROGRESS BAR -->
+            <div class="max-w-4xl mx-auto mt-8 space-y-2">
+                <div class="flex justify-between items-center font-space text-xs">
+                    <span class="text-gray-300 flex items-center space-x-2">
+                        <i class="fas fa-microchip text-cyan-400"></i>
+                        <span>PREPARATION WINDOW ELAPSED</span>
+                    </span>
+                    <span id="pctText" class="font-orbitron font-bold text-pink-400 text-sm">0.00%</span>
+                </div>
+                <div class="w-full bg-black/60 border border-white/10 h-4 rounded-full p-0.5 overflow-hidden">
+                    <div id="pctBar" class="h-full bg-gradient-to-r from-cyan-500 via-pink-500 to-amber-400 rounded-full transition-all duration-300 shadow-[0_0_15px_rgba(0,240,255,0.8)]" style="width: 0%"></div>
+                </div>
+                <div class="flex justify-between font-fira text-[10px] text-gray-400 pt-1">
+                    <span>TIMELINE START: JAN 01, 2026</span>
+                    <span id="targetFooterText">TARGET EXAM DATE: JAN 22, 2027</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. HIGH-TECH MODULES ROW 1: MARKS PREDICTOR & CHAPTER PYQ VAULT -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            
+            <!-- MODULE 1: JEE MARKS VS RANK & CUTOFF PREDICTOR ENGINE -->
+            <div class="glass-hud p-6 tech-corners flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-center pb-3 border-b border-white/10 mb-4">
+                        <h3 class="font-orbitron text-sm font-bold text-cyan-300 flex items-center space-x-2">
+                            <i class="fas fa-calculator text-pink-500"></i>
+                            <span>LIVE MARKS VS RANK PREDICTOR</span>
+                        </h3>
+                        <span class="font-fira text-[10px] px-2.5 py-1 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-400/30">
+                            300 MARKS MAX
+                        </span>
+                    </div>
+
+                    <!-- Sliders Grid -->
+                    <div class="space-y-4 font-space text-xs">
+                        
+                        <!-- Physics -->
+                        <div>
+                            <div class="flex justify-between text-gray-300 mb-1">
+                                <span class="font-semibold text-cyan-300">Physics Marks:</span>
+                                <span id="mPhysText" class="font-fira font-bold text-white">80 / 100</span>
+                            </div>
+                            <input type="range" id="mPhys" min="0" max="100" value="80" oninput="calcPredictor()" class="w-full accent-cyan-400 cursor-pointer">
+                        </div>
+
+                        <!-- Chemistry -->
+                        <div>
+                            <div class="flex justify-between text-gray-300 mb-1">
+                                <span class="font-semibold text-emerald-300">Chemistry Marks:</span>
+                                <span id="mChemText" class="font-fira font-bold text-white">75 / 100</span>
+                            </div>
+                            <input type="range" id="mChem" min="0" max="100" value="75" oninput="calcPredictor()" class="w-full accent-emerald-400 cursor-pointer">
+                        </div>
+
+                        <!-- Math -->
+                        <div>
+                            <div class="flex justify-between text-gray-300 mb-1">
+                                <span class="font-semibold text-pink-300">Mathematics Marks:</span>
+                                <span id="mMathText" class="font-fira font-bold text-white">65 / 100</span>
+                            </div>
+                            <input type="range" id="mMath" min="0" max="100" value="65" oninput="calcPredictor()" class="w-full accent-pink-400 cursor-pointer">
+                        </div>
+
+                    </div>
+
+                    <!-- Computed Realtime Output HUD -->
+                    <div class="grid grid-cols-2 gap-3 mt-6 p-4 rounded-xl bg-black/50 border border-white/10 font-orbitron">
+                        <div class="text-center">
+                            <span class="block text-[10px] text-gray-400 font-fira">TOTAL SCORE</span>
+                            <span id="predTotal" class="text-2xl font-black text-white">220 / 300</span>
+                        </div>
+                        <div class="text-center">
+                            <span class="block text-[10px] text-gray-400 font-fira">PREDICTED PERCENTILE</span>
+                            <span id="predPct" class="text-2xl font-black text-cyan-400">99.45%ile</span>
+                        </div>
+                        <div class="text-center col-span-2 pt-2 border-t border-white/10">
+                            <span class="block text-[10px] text-gray-400 font-fira">ESTIMATED AIR RANK BAND</span>
+                            <span id="predAIR" class="text-xl font-bold text-pink-400">AIR 1,200 - 2,500</span>
+                            <p id="predCollege" class="font-fira text-[11px] text-emerald-300 mt-1">ELIGIBLE: IIT Bombay / IIT Delhi Core Specs</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODULE 2: CHAPTER-WISE JEE PYQ VAULT -->
+            <div class="glass-hud p-6 tech-corners flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-center pb-3 border-b border-white/10 mb-3">
+                        <h3 class="font-orbitron text-sm font-bold text-cyan-300 flex items-center space-x-2">
+                            <i class="fas fa-brain text-amber-400"></i>
+                            <span>CHAPTER PYQ GENERATOR VAULT</span>
+                        </h3>
+                        <span id="pyqSubBadge" class="font-fira text-[10px] px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/30">
+                            PHYSICS
+                        </span>
+                    </div>
+
+                    <!-- Direct Topic Selector Dropdown -->
+                    <div class="mb-3">
+                        <select id="pyqChapterSelect" onchange="onPYQChapterSelect()" class="w-full bg-slate-900 border border-white/20 text-white text-xs font-fira p-2.5 rounded-xl focus:outline-none focus:border-cyan-400">
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+
+                    <!-- Question Card Container -->
+                    <div class="p-4 rounded-2xl bg-black/60 border border-white/10 space-y-3 min-h-[160px] flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-1">
+                                <span id="pyqChapterTag" class="font-fira text-[10px] text-cyan-400 font-semibold">[ CHAPTER ]</span>
+                                <span id="pyqYearTag" class="font-fira text-[10px] text-pink-400 font-bold">JEE MAIN / ADVANCED</span>
+                            </div>
+                            <h4 id="pyqQuestion" class="font-space font-bold text-sm text-white leading-relaxed">
+                                Question loading...
+                            </h4>
+                        </div>
+
+                        <!-- Hint Banner (Hidden by default) -->
+                        <div id="pyqHintBox" class="hidden p-2.5 rounded-xl bg-cyan-950/80 border border-cyan-500/40 font-fira text-xs text-cyan-200">
+                            <strong><i class="fas fa-lightbulb text-amber-400 mr-1"></i> Hint:</strong> <span id="pyqHintText"></span>
+                        </div>
+
+                        <!-- Answer Box (Hidden by default) -->
+                        <div id="pyqAnswerBox" class="hidden p-2.5 rounded-xl bg-pink-950/80 border border-pink-500/40 font-fira text-xs text-pink-200">
+                            <strong><i class="fas fa-check-circle text-emerald-400 mr-1"></i> Solution:</strong> <span id="pyqAnsText"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-4 font-space text-xs">
+                    <button onclick="togglePYQHint()" class="py-2.5 rounded-xl bg-white/5 border border-white/15 hover:bg-white/15 text-gray-200 transition font-semibold">
+                        <i class="fas fa-key mr-1 text-amber-400"></i> HINT
+                    </button>
+                    <button onclick="togglePYQAnswer()" class="py-2.5 rounded-xl bg-white/5 border border-white/15 hover:bg-white/15 text-gray-200 transition font-semibold">
+                        <i class="fas fa-eye mr-1 text-pink-400"></i> REVEAL
+                    </button>
+                    <button onclick="skipPYQ()" class="py-2.5 rounded-xl bg-white/5 border border-white/15 hover:bg-white/15 text-gray-300 transition font-semibold">
+                        <i class="fas fa-forward mr-1 text-cyan-400"></i> SKIP
+                    </button>
+                    <button onclick="nextPYQ()" class="py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-pink-500 text-white font-bold hover:opacity-90 transition">
+                        NEXT <i class="fas fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 3. HIGH-TECH MODULES ROW 2: FOCUS TIMER & COMPLETE JEE SYLLABUS MATRIX -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <!-- MODULE 3: WARZONE FOCUS TIMER -->
+            <div class="glass-hud p-6 tech-corners flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-center pb-3 border-b border-white/10 mb-4">
+                        <h3 class="font-orbitron text-sm font-bold text-cyan-300 flex items-center space-x-2">
+                            <i class="fas fa-stopwatch text-pink-500"></i>
+                            <span>WARZONE FOCUS TIMER</span>
+                        </h3>
+                        <span id="pomoBadge" class="font-fira text-[10px] px-2.5 py-1 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-400/30">
+                            READY
+                        </span>
+                    </div>
+
+                    <div class="text-center py-6">
+                        <div id="pomoClock" class="font-orbitron text-5xl font-black text-white text-glow-cyan">50:00</div>
+                        <p class="font-fira text-xs text-gray-400 mt-2">[ DEEP PROBLEM SOLVING ]</p>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2 my-2 font-space text-xs">
+                        <button onclick="setPomoTime(50)" class="py-2 bg-white/5 hover:bg-white/10 rounded-xl border border-white/10 text-gray-300">50/10 Mode</button>
+                        <button onclick="setPomoTime(25)" class="py-2 bg-white/5 hover:bg-white/10 rounded-xl border border-white/10 text-gray-300">25/5 Mode</button>
+                    </div>
+                </div>
+
+                <div class="flex gap-2 pt-2">
+                    <button id="pomoBtn" onclick="togglePomoTimer()" class="flex-1 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-pink-500 text-white font-space font-bold hover:opacity-90 shadow-lg transition">
+                        START SESSION
+                    </button>
+                    <button onclick="resetPomoTimer()" class="px-4 py-3 rounded-xl bg-white/10 text-gray-300 hover:bg-white/20 transition">
+                        <i class="fas fa-redo"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- MODULE 4 & 5: COMPLETE JEE SYLLABUS MATRIX (SPAN 2 COLUMNS) -->
+            <div class="glass-hud p-6 tech-corners lg:col-span-2 flex flex-col justify-between">
+                <div>
+                    <div class="flex flex-wrap justify-between items-center pb-3 border-b border-white/10 gap-2 mb-4">
+                        <h3 class="font-orbitron text-sm font-bold text-cyan-300 flex items-center space-x-2">
+                            <i class="fas fa-layer-group text-emerald-400"></i>
+                            <span>COMPLETE JEE SYLLABUS MATRIX</span>
+                        </h3>
+                        <span id="overallSyllabusPct" class="font-fira text-[10px] px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 font-bold">
+                            0% COMPLETED
+                        </span>
+                    </div>
+
+                    <!-- Subject Progress Bars Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4 font-space text-xs">
+                        
+                        <!-- Physics -->
+                        <div class="p-3 rounded-xl bg-black/40 border border-white/10 space-y-1.5">
+                            <div class="flex justify-between">
+                                <span class="font-bold text-cyan-300">PHYSICS</span>
+                                <span id="sPhysPct" class="font-fira text-cyan-400">0%</span>
+                            </div>
+                            <div class="w-full bg-white/10 h-2 rounded-full overflow-hidden">
+                                <div id="sPhysBar" class="bg-cyan-400 h-full w-0 transition-all duration-300"></div>
+                            </div>
+                        </div>
+
+                        <!-- Chemistry -->
+                        <div class="p-3 rounded-xl bg-black/40 border border-white/10 space-y-1.5">
+                            <div class="flex justify-between">
+                                <span class="font-bold text-emerald-300">CHEMISTRY</span>
+                                <span id="sChemPct" class="font-fira text-emerald-400">0%</span>
+                            </div>
+                            <div class="w-full bg-white/10 h-2 rounded-full overflow-hidden">
+                                <div id="sChemBar" class="bg-emerald-400 h-full w-0 transition-all duration-300"></div>
+                            </div>
+                        </div>
+
+                        <!-- Math -->
+                        <div class="p-3 rounded-xl bg-black/40 border border-white/10 space-y-1.5">
+                            <div class="flex justify-between">
+                                <span class="font-bold text-pink-300">MATHS</span>
+                                <span id="sMathPct" class="font-fira text-pink-400">0%</span>
+                            </div>
+                            <div class="w-full bg-white/10 h-2 rounded-full overflow-hidden">
+                                <div id="sMathBar" class="bg-pink-400 h-full w-0 transition-all duration-300"></div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Filters & Search Bar -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-3 font-space text-xs">
+                        <input type="text" id="syllSearch" placeholder="🔍 Search chapter..." oninput="renderSyllabus()" class="bg-black/50 border border-white/20 text-white p-2 rounded-xl focus:outline-none focus:border-cyan-400">
+                        <select id="syllSubFilter" onchange="renderSyllabus()" class="bg-black/50 border border-white/20 text-white p-2 rounded-xl focus:outline-none">
+                            <option value="all">All Subjects</option>
+                            <option value="phy">Physics Only</option>
+                            <option value="chem">Chemistry Only</option>
+                            <option value="math">Maths Only</option>
+                        </select>
+                        <select id="syllClassFilter" onchange="renderSyllabus()" class="bg-black/50 border border-white/20 text-white p-2 rounded-xl focus:outline-none">
+                            <option value="all">All Classes (11 & 12)</option>
+                            <option value="11">Class 11</option>
+                            <option value="12">Class 12</option>
+                        </select>
+                    </div>
+
+                    <!-- Interactive Chapter Checkbox List -->
+                    <div id="syllabusChapterList" class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-space max-h-64 overflow-y-auto pr-1">
+                        <!-- Rendered dynamically -->
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center pt-3 border-t border-white/10 mt-3">
+                    <span class="font-fira text-[11px] text-gray-400">[ Tap status button to toggle: NOT STARTED ➔ IN PROGRESS ➔ MASTERED ]</span>
+                    <button onclick="resetSyllabus()" class="px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 text-gray-400 rounded-xl font-fira text-xs transition">
+                        RESET ALL
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- TARGET EXAM CUSTOMIZER MODAL -->
+    <div id="targetModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="glass-hud p-6 sm:p-8 max-w-md w-full space-y-5 border-cyan-500/30 tech-corners">
+            <div class="flex justify-between items-center border-b border-white/10 pb-3">
+                <h3 class="font-orbitron text-base font-bold text-cyan-300 flex items-center space-x-2">
+                    <i class="fas fa-crosshairs text-pink-500"></i>
+                    <span>TARGET EXAM TIMELINE</span>
+                </h3>
+                <button onclick="closeModal('targetModal')" class="text-gray-400 hover:text-white"><i class="fas fa-times"></i></button>
+            </div>
+
+            <div class="space-y-4 font-space text-xs">
+                <div>
+                    <label class="block text-gray-300 mb-1.5 font-semibold">Select Goal Preset:</label>
+                    <select id="presetSelect" onchange="onPresetChange()" class="w-full bg-slate-900 border border-white/20 text-white p-3 rounded-xl focus:outline-none focus:border-cyan-400">
+                        <option value="main1">JEE Main 2027 - Session 1 (Jan 22, 2027)</option>
+                        <option value="main2">JEE Main 2027 - Session 2 (Apr 01, 2027)</option>
+                        <option value="adv">JEE Advanced 2027 (May 23, 2027)</option>
+                        <option value="custom">Custom Date & Time...</option>
+                    </select>
+                </div>
+
+                <div id="customDateBlock" class="hidden space-y-3">
+                    <div>
+                        <label class="block text-gray-300 mb-1 font-semibold">Custom Target Name:</label>
+                        <input type="text" id="customTitle" placeholder="e.g. BITSAT 2027" class="w-full bg-slate-900 border border-white/20 text-white p-2.5 rounded-xl">
+                    </div>
+                    <div>
+                        <label class="block text-gray-300 mb-1 font-semibold">Target Datetime:</label>
+                        <input type="datetime-local" id="customDatetime" class="w-full bg-slate-900 border border-white/20 text-white p-2.5 rounded-xl">
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex gap-3 pt-2">
+                <button onclick="applyTarget()" class="flex-1 bg-gradient-to-r from-cyan-500 to-pink-500 text-white font-space font-bold py-3 rounded-xl hover:opacity-90 transition">
+                    APPLY TARGET
+                </button>
+                <button onclick="closeModal('targetModal')" class="px-5 py-3 bg-white/10 text-gray-300 font-space text-xs rounded-xl hover:bg-white/20 transition">
+                    CANCEL
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN LOGIC JAVASCRIPT ENGINE -->
+    <script>
+        
+        // --------------------------------------------------------------------------
+        // 1. DYNAMIC INTERACTIVE PARTICLE CANVAS
+        // --------------------------------------------------------------------------
+        const canvas = document.getElementById('canvasBg');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let mouse = { x: null, y: null, radius: 150 };
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            initParticles();
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.x;
+            mouse.y = e.y;
+        });
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2.5 + 1;
+                this.baseX = this.x;
+                this.baseY = this.y;
+                this.vx = (Math.random() - 0.5) * 0.6;
+                this.vy = (Math.random() - 0.5) * 0.6;
+            }
+
+            draw() {
+                ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--accent-primary').trim() || '#00f0ff';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.fill();
+            }
+
+            update() {
+                if (mouse.x && mouse.y) {
+                    let dx = mouse.x - this.x;
+                    let dy = mouse.y - this.y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < mouse.radius) {
+                        let force = (mouse.radius - distance) / mouse.radius;
+                        let directionX = dx / distance;
+                        let directionY = dy / distance;
+                        this.x -= directionX * force * 3;
+                        this.y -= directionY * force * 3;
+                    }
+                }
+
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            const count = Math.floor((canvas.width * canvas.height) / 12000);
+            for (let i = 0; i < count; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            for (let a = 0; a < particles.length; a++) {
+                for (let b = a; b < particles.length; b++) {
+                    let dx = particles[a].x - particles[b].x;
+                    let dy = particles[a].y - particles[b].y;
+                    let dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 100) {
+                        ctx.strokeStyle = getComputedStyle(document.body).getPropertyValue('--accent-glow').trim() || 'rgba(0,240,255,0.2)';
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[a].x, particles[a].y);
+                        ctx.lineTo(particles[b].x, particles[b].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            requestAnimationFrame(animateParticles);
+        }
+
+        resizeCanvas();
+        animateParticles();
+
+        // --------------------------------------------------------------------------
+        // 2. THEME & SFX SWITCHER
+        // --------------------------------------------------------------------------
+        function setTheme(theme) {
+            audio.playLaserClick();
+            document.body.className = `theme-${theme} relative select-none`;
+        }
+
+        function toggleSFX() {
+            const active = audio.toggleMute();
+            document.getElementById('sfxBtn').className = active ? "px-3 py-1.5 rounded-xl bg-cyan-500/20 border border-cyan-400/40 text-cyan-300 font-fira flex items-center space-x-2 transition" : "px-3 py-1.5 rounded-xl bg-white/5 border border-white/15 text-gray-400 font-fira flex items-center space-x-2 transition";
+            document.getElementById('sfxIcon').className = active ? "fas fa-volume-up text-cyan-400 animate-pulse" : "fas fa-volume-mute text-gray-400";
+            document.getElementById('sfxLabel').innerText = active ? "SFX: ON" : "SFX: OFF";
+        }
+
+        // --------------------------------------------------------------------------
+        // 3. COUNTDOWN TIMER ENGINE
+        // --------------------------------------------------------------------------
+        const EXAM_PRESETS = {
+            main1: {
+                title: "JEE MAIN 2027 T-MINUS",
+                badge: "SYS-TARGET: JEE MAIN SESSION 1 (JAN 22, 2027)",
+                footer: "TARGET EXAM DATE: JAN 22, 2027 (09:00 AM)",
+                target: new Date("2027-01-22T09:00:00+05:30"),
+                start: new Date("2026-01-01T00:00:00+05:30")
+            },
+            main2: {
+                title: "JEE MAIN S-2 T-MINUS",
+                badge: "SYS-TARGET: JEE MAIN SESSION 2 (APR 01, 2027)",
+                footer: "TARGET EXAM DATE: APR 01, 2027 (09:00 AM)",
+                target: new Date("2027-04-01T09:00:00+05:30"),
+                start: new Date("2026-01-01T00:00:00+05:30")
+            },
+            adv: {
+                title: "JEE ADVANCED T-MINUS",
+                badge: "SYS-TARGET: JEE ADVANCED (MAY 23, 2027)",
+                footer: "TARGET EXAM DATE: MAY 23, 2027 (09:00 AM)",
+                target: new Date("2027-05-23T09:00:00+05:30"),
+                start: new Date("2026-01-01T00:00:00+05:30")
+            }
+        };
+
+        let activeTarget = EXAM_PRESETS.main1;
+
+        function updateCountdown() {
+            const now = new Date();
+            const diff = activeTarget.target - now;
+
+            if (diff <= 0) {
+                document.getElementById('countDays').innerText = "000";
+                document.getElementById('countHours').innerText = "00";
+                document.getElementById('countMins').innerText = "00";
+                document.getElementById('countSecs').innerText = "00";
+                document.getElementById('countMS').innerText = "000";
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const mins = Math.floor((diff / 1000 / 60) % 60);
+            const secs = Math.floor((diff / 1000) % 60);
+            const ms = Math.floor(diff % 1000);
+
+            document.getElementById('countDays').innerText = String(days).padStart(3, '0');
+            document.getElementById('countHours').innerText = String(hours).padStart(2, '0');
+            document.getElementById('countMins').innerText = String(mins).padStart(2, '0');
+            document.getElementById('countSecs').innerText = String(secs).padStart(2, '0');
+            document.getElementById('countMS').innerText = String(ms).padStart(3, '0');
+
+            const total = activeTarget.target - activeTarget.start;
+            const elapsed = now - activeTarget.start;
+            const pct = Math.max(0, Math.min(100, (elapsed / total) * 100));
+
+            document.getElementById('pctBar').style.width = `${pct}%`;
+            document.getElementById('pctText').innerText = `${pct.toFixed(2)}%`;
+        }
+
+        function runCountdownLoop() {
+            updateCountdown();
+            requestAnimationFrame(runCountdownLoop);
+        }
+        requestAnimationFrame(runCountdownLoop);
+
+        // --------------------------------------------------------------------------
+        // 4. MARKS VS RANK PREDICTOR ENGINE
+        // --------------------------------------------------------------------------
+        function calcPredictor() {
+            const p = parseInt(document.getElementById('mPhys').value) || 0;
+            const c = parseInt(document.getElementById('mChem').value) || 0;
+            const m = parseInt(document.getElementById('mMath').value) || 0;
+
+            document.getElementById('mPhysText').innerText = `${p} / 100`;
+            document.getElementById('mChemText').innerText = `${c} / 100`;
+            document.getElementById('mMathText').innerText = `${m} / 100`;
+
+            const total = p + c + m;
+            document.getElementById('predTotal').innerText = `${total} / 300`;
+
+            let pct = 0;
+            if (total >= 280) pct = 99.98;
+            else if (total >= 250) pct = 99.85;
+            else if (total >= 220) pct = 99.45;
+            else if (total >= 190) pct = 98.80;
+            else if (total >= 160) pct = 97.20;
+            else if (total >= 130) pct = 94.50;
+            else if (total >= 100) pct = 89.00;
+            else pct = Math.max(10, (total / 300) * 85);
+
+            document.getElementById('predPct').innerText = `${pct.toFixed(2)}%ile`;
+
+            let airStr = "";
+            let collegeStr = "";
+
+            if (total >= 250) {
+                airStr = "AIR 1 - 300";
+                collegeStr = "ELIGIBLE: IIT Bombay, IIT Delhi, IIT Madras CS / ECE";
+            } else if (total >= 200) {
+                airStr = "AIR 500 - 3,000";
+                collegeStr = "ELIGIBLE: Top 7 IITs Core Engineering / NIT Trichy CSE";
+            } else if (total >= 150) {
+                airStr = "AIR 5,000 - 15,000";
+                collegeStr = "ELIGIBLE: Top NITs, IIITs, DTU, NSUT Circuit Branches";
+            } else if (total >= 100) {
+                airStr = "AIR 25,000 - 60,000";
+                collegeStr = "ELIGIBLE: Mid NITs, Core Branches & Top State Colleges";
+            } else {
+                airStr = "AIR 80,000+";
+                collegeStr = "DIRECTIVE: Increase study hours to reach 180+ marks target!";
+            }
+
+            document.getElementById('predAIR').innerText = airStr;
+            document.getElementById('predCollege').innerText = collegeStr;
+        }
+        calcPredictor();
+
+        // --------------------------------------------------------------------------
+        // 5. FULL COMPLETE JEE SYLLABUS DATABASE
+        // --------------------------------------------------------------------------
+        const COMPLETE_JEE_SYLLABUS = [
+            // PHYSICS Class 11
+            { id: 'p_11_1', sub: 'phy', cls: '11', name: 'Units, Dimensions & Errors' },
+            { id: 'p_11_2', sub: 'phy', cls: '11', name: 'Kinematics 1D & 2D Projectile' },
+            { id: 'p_11_3', sub: 'phy', cls: '11', name: 'Laws of Motion & Friction' },
+            { id: 'p_11_4', sub: 'phy', cls: '11', name: 'Work, Energy & Power' },
+            { id: 'p_11_5', sub: 'phy', cls: '11', name: 'Center of Mass & Collisions' },
+            { id: 'p_11_6', sub: 'phy', cls: '11', name: 'Rotational Motion & Rigid Body' },
+            { id: 'p_11_7', sub: 'phy', cls: '11', name: 'Gravitation & Satellite Motion' },
+            { id: 'p_11_8', sub: 'phy', cls: '11', name: 'Properties of Solids & Fluids' },
+            { id: 'p_11_9', sub: 'phy', cls: '11', name: 'Thermal Physics & Calorimetry' },
+            { id: 'p_11_10', sub: 'phy', cls: '11', name: 'Thermodynamics & KTG' },
+            { id: 'p_11_11', sub: 'phy', cls: '11', name: 'Simple Harmonic Motion (SHM)' },
+            { id: 'p_11_12', sub: 'phy', cls: '11', name: 'Sound Waves & Doppler Effect' },
+            // PHYSICS Class 12
+            { id: 'p_12_1', sub: 'phy', cls: '12', name: 'Electrostatics & Gauss Law' },
+            { id: 'p_12_2', sub: 'phy', cls: '12', name: 'Capacitance & Dielectrics' },
+            { id: 'p_12_3', sub: 'phy', cls: '12', name: 'Current Electricity & Circuits' },
+            { id: 'p_12_4', sub: 'phy', cls: '12', name: 'Magnetic Effects of Current' },
+            { id: 'p_12_5', sub: 'phy', cls: '12', name: 'Magnetism & Matter' },
+            { id: 'p_12_6', sub: 'phy', cls: '12', name: 'Electromagnetic Induction (EMI)' },
+            { id: 'p_12_7', sub: 'phy', cls: '12', name: 'Alternating Current (AC)' },
+            { id: 'p_12_8', sub: 'phy', cls: '12', name: 'Electromagnetic Waves' },
+            { id: 'p_12_9', sub: 'phy', cls: '12', name: 'Ray Optics & Optical Instruments' },
+            { id: 'p_12_10', sub: 'phy', cls: '12', name: 'Wave Optics & Interference' },
+            { id: 'p_12_11', sub: 'phy', cls: '12', name: 'Dual Nature of Matter & Photoelectric' },
+            { id: 'p_12_12', sub: 'phy', cls: '12', name: 'Atoms & Nuclear Physics' },
+            { id: 'p_12_13', sub: 'phy', cls: '12', name: 'Semiconductor Electronics' },
+
+            // CHEMISTRY Class 11
+            { id: 'c_11_1', sub: 'chem', cls: '11', name: 'Mole Concept & Stoichiometry' },
+            { id: 'c_11_2', sub: 'chem', cls: '11', name: 'Atomic Structure & Quantum Nos' },
+            { id: 'c_11_3', sub: 'chem', cls: '11', name: 'Periodic Classification & Trends' },
+            { id: 'c_11_4', sub: 'chem', cls: '11', name: 'Chemical Bonding & VSEPR/MOT' },
+            { id: 'c_11_5', sub: 'chem', cls: '11', name: 'Chemical & Ionic Equilibrium' },
+            { id: 'c_11_6', sub: 'chem', cls: '11', name: 'Chemical Thermodynamics & Energetics' },
+            { id: 'c_11_7', sub: 'chem', cls: '11', name: 'Redox Reactions & Oxidation States' },
+            { id: 'c_11_8', sub: 'chem', cls: '11', name: 'General Organic Chemistry (GOC)' },
+            { id: 'c_11_9', sub: 'chem', cls: '11', name: 'Isomerism & Stereochemistry' },
+            { id: 'c_11_10', sub: 'chem', cls: '11', name: 'Hydrocarbons (Alkanes, Alkenes, Alkynes)' },
+            // CHEMISTRY Class 12
+            { id: 'c_12_1', sub: 'chem', cls: '12', name: 'Solutions & Colligative Properties' },
+            { id: 'c_12_2', sub: 'chem', cls: '12', name: 'Electrochemistry & Nernst Eq' },
+            { id: 'c_12_3', sub: 'chem', cls: '12', name: 'Chemical Kinetics & Rate Laws' },
+            { id: 'c_12_4', sub: 'chem', cls: '12', name: 'd and f Block Elements' },
+            { id: 'c_12_5', sub: 'chem', cls: '12', name: 'Coordination Compounds & CFT' },
+            { id: 'c_12_6', sub: 'chem', cls: '12', name: 'Haloalkanes & Haloarenes' },
+            { id: 'c_12_7', sub: 'chem', cls: '12', name: 'Alcohols, Phenols & Ethers' },
+            { id: 'c_12_8', sub: 'chem', cls: '12', name: 'Aldehydes, Ketones & Carboxylic Acids' },
+            { id: 'c_12_9', sub: 'chem', cls: '12', name: 'Amines & Nitrogen Compounds' },
+            { id: 'c_12_10', sub: 'chem', cls: '12', name: 'Biomolecules & Practical Chemistry' },
+
+            // MATHS Class 11
+            { id: 'm_11_1', sub: 'math', cls: '11', name: 'Sets, Relations & Functions' },
+            { id: 'm_11_2', sub: 'math', cls: '11', name: 'Trigonometry & Equations' },
+            { id: 'm_11_3', sub: 'math', cls: '11', name: 'Complex Numbers & Quadratic Eq' },
+            { id: 'm_11_4', sub: 'math', cls: '11', name: 'Permutations & Combinations (P&C)' },
+            { id: 'm_11_5', sub: 'math', cls: '11', name: 'Binomial Theorem' },
+            { id: 'm_11_6', sub: 'math', cls: '11', name: 'Sequences & Series (AP, GP, AGP)' },
+            { id: 'm_11_7', sub: 'math', cls: '11', name: 'Straight Lines & Pair of Lines' },
+            { id: 'm_11_8', sub: 'math', cls: '11', name: 'Circles & System of Circles' },
+            { id: 'm_11_9', sub: 'math', cls: '11', name: 'Conic Sections (Parabola, Ellipse, Hyperbola)' },
+            { id: 'm_11_10', sub: 'math', cls: '11', name: 'Statistics & Measures of Dispersion' },
+            // MATHS Class 12
+            { id: 'm_12_1', sub: 'math', cls: '12', name: 'Inverse Trigonometric Functions' },
+            { id: 'm_12_2', sub: 'math', cls: '12', name: 'Matrices & Determinants' },
+            { id: 'm_12_3', sub: 'math', cls: '12', name: 'Limits, Continuity & Differentiability' },
+            { id: 'm_12_4', sub: 'math', cls: '12', name: 'Application of Derivatives (AOD)' },
+            { id: 'm_12_5', sub: 'math', cls: '12', name: 'Indefinite & Definite Integration' },
+            { id: 'm_12_6', sub: 'math', cls: '12', name: 'Area Under Curves (AUC)' },
+            { id: 'm_12_7', sub: 'math', cls: '12', name: 'Differential Equations' },
+            { id: 'm_12_8', sub: 'math', cls: '12', name: 'Vector Algebra' },
+            { id: 'm_12_9', sub: 'math', cls: '12', name: '3D Geometry (Lines & Planes)' },
+            { id: 'm_12_10', sub: 'math', cls: '12', name: 'Probability & Bayes Theorem' }
+        ];
+
+        // Status mapping: 0 = Not Started, 1 = In Progress, 2 = Mastered
+        let syllabusStatus = JSON.parse(localStorage.getItem('jee_full_syll_status')) || {};
+
+        function renderSyllabus() {
+            const list = document.getElementById('syllabusChapterList');
+            const searchVal = (document.getElementById('syllSearch').value || '').toLowerCase();
+            const subFilter = document.getElementById('syllSubFilter').value;
+            const clsFilter = document.getElementById('syllClassFilter').value;
+
+            list.innerHTML = '';
+
+            let pPoints = 0, pTot = 0;
+            let cPoints = 0, cTot = 0;
+            let mPoints = 0, mTot = 0;
+
+            COMPLETE_JEE_SYLLABUS.forEach(item => {
+                const status = syllabusStatus[item.id] || 0; // 0, 1, or 2
+                const weight = status === 2 ? 1 : (status === 1 ? 0.5 : 0);
+
+                if (item.sub === 'phy') { pTot += 1; pPoints += weight; }
+                if (item.sub === 'chem') { cTot += 1; cPoints += weight; }
+                if (item.sub === 'math') { mTot += 1; mPoints += weight; }
+
+                // Check Filters
+                if (subFilter !== 'all' && item.sub !== subFilter) return;
+                if (clsFilter !== 'all' && item.cls !== clsFilter) return;
+                if (searchVal && !item.name.toLowerCase().includes(searchVal)) return;
+
+                const div = document.createElement('div');
+                let badgeClass = "bg-white/5 border-white/10 text-gray-400";
+                let badgeLabel = "NOT STARTED";
+                if (status === 1) {
+                    badgeClass = "bg-amber-500/20 border-amber-400/30 text-amber-300";
+                    badgeLabel = "IN PROGRESS";
+                } else if (status === 2) {
+                    badgeClass = "bg-emerald-500/20 border-emerald-400/30 text-emerald-300 font-bold";
+                    badgeLabel = "MASTERED";
+                }
+
+                div.className = `flex items-center justify-between p-2.5 rounded-xl border transition hover:bg-white/5 bg-black/40 border-white/10`;
+                div.innerHTML = `
+                    <span class="text-gray-200 font-semibold pr-2">${item.name}</span>
+                    <button onclick="cycleSyllabusStatus('${item.id}')" class="px-2.5 py-1 rounded-lg border font-fira text-[10px] whitespace-nowrap ${badgeClass}">
+                        ${badgeLabel}
+                    </button>
+                `;
+                list.appendChild(div);
+            });
+
+            const pPct = Math.round((pPoints / pTot) * 100) || 0;
+            const cPct = Math.round((cPoints / cTot) * 100) || 0;
+            const mPct = Math.round((mPoints / mTot) * 100) || 0;
+            const totalPoints = pPoints + cPoints + mPoints;
+            const totalMax = pTot + cTot + mTot;
+            const overallPct = Math.round((totalPoints / totalMax) * 100) || 0;
+
+            document.getElementById('sPhysPct').innerText = `${pPct}%`;
+            document.getElementById('sPhysBar').style.width = `${pPct}%`;
+            document.getElementById('sChemPct').innerText = `${cPct}%`;
+            document.getElementById('sChemBar').style.width = `${cPct}%`;
+            document.getElementById('sMathPct').innerText = `${mPct}%`;
+            document.getElementById('sMathBar').style.width = `${mPct}%`;
+            document.getElementById('overallSyllabusPct').innerText = `${overallPct}% MASTERY`;
+
+            localStorage.setItem('jee_full_syll_status', JSON.stringify(syllabusStatus));
+        }
+
+        function cycleSyllabusStatus(id) {
+            audio.playLaserClick();
+            const curr = syllabusStatus[id] || 0;
+            syllabusStatus[id] = (curr + 1) % 3;
+            renderSyllabus();
+        }
+
+        function resetSyllabus() {
+            audio.playLaserClick();
+            syllabusStatus = {};
+            renderSyllabus();
+        }
+
+        // --------------------------------------------------------------------------
+        // 6. ALL CHAPTER PYQ VAULT DATABASE
+        // --------------------------------------------------------------------------
+        const CHAPTER_PYQ_VAULT = [
+            // Physics PYQs
+            {
+                chapter: "Rotational Motion",
+                sub: "PHYSICS",
+                year: "JEE ADVANCED 2023",
+                q: "A uniform solid cylinder of mass M and radius R rolls without slipping on an inclined plane of angle θ. Find the minimum friction coefficient μ required for pure rolling.",
+                hint: "Use torque equation about COM (τ = Iα) along with linear motion equation F_net = ma. For solid cylinder I = 1/2 MR².",
+                ans: "μ_min = (1/3) tan θ. Trap: Using ring or sphere moment of inertia instead of solid cylinder!"
+            },
+            {
+                chapter: "Electrostatics & Gauss Law",
+                sub: "PHYSICS",
+                year: "JEE MAIN 2024",
+                q: "A point charge +q is located at the center of a cube of edge length L. What is the electric flux passing through one face of the cube?",
+                hint: "Apply Gauss's Law: total flux through closed surface = q_enclosed / ε_0. Divide equally by 6 symmetric faces.",
+                ans: "Flux = q / (6ε_0). Shortcut: Symmetry ensures equal flux distribution across all 6 faces."
+            },
+            {
+                chapter: "Ray Optics",
+                sub: "PHYSICS",
+                year: "JEE MAIN 2023",
+                q: "A convex lens of focal length 20 cm is placed in contact with a concave lens of focal length 25 cm. What is the power of the combination?",
+                hint: "P_net = P1 + P2 = (100/f1) + (100/f2) in dioptres (f in cm). Remember concave lens has negative focal length.",
+                ans: "+1 Dioptre. (P1 = +5D, P2 = -4D ➔ Net Power = +1D, equivalent convex lens of f = +100 cm)."
+            },
+            {
+                chapter: "Current Electricity",
+                sub: "PHYSICS",
+                year: "JEE MAIN 2024",
+                q: "In a potentiometer circuit, a cell gives a balance point at 120 cm. When balanced with a shunt resistance of 5Ω, the balance point shifts to 80 cm. Find internal resistance r.",
+                hint: "Use formula r = R * (L1 - L2) / L2 where L1 = 120 cm, L2 = 80 cm, R = 5Ω.",
+                ans: "r = 5 * (120 - 80) / 80 = 2.5 Ω."
+            },
+            {
+                chapter: "Semiconductors",
+                sub: "PHYSICS",
+                year: "JEE MAIN 2023",
+                q: "In a p-n junction diode, what is the width of the depletion region when forward biased and reverse biased?",
+                hint: "Forward bias pushes majority carriers across the junction, reducing depletion width.",
+                ans: "Decreases under Forward Bias, Increases under Reverse Bias."
+            },
+
+            // Chemistry PYQs
+            {
+                chapter: "General Organic Chemistry (GOC)",
+                sub: "CHEMISTRY",
+                year: "JEE ADVANCED 2022",
+                q: "Arrange the following carbocations in decreasing order of stability: (I) (CH3)3C+, (II) CH2=CH-CH2+, (III) CH3-CH2+, (IV) C6H5-CH2+.",
+                hint: "Consider resonance stabilization (benzylic/allylic) versus hyperconjugation and inductive effect of alkyl groups.",
+                ans: "C6H5-CH2+ > (CH3)3C+ > CH2=CH-CH2+ > CH3-CH2+. Benzylic resonance gives maximum stabilization."
+            },
+            {
+                chapter: "Coordination Compounds",
+                sub: "CHEMISTRY",
+                year: "JEE MAIN 2024",
+                q: "What is the hybridization and magnetic behavior of [Fe(CN)6]3- complex ion?",
+                hint: "CN- is a strong field ligand causing pairing of d-electrons in Fe3+ (3d5 configuration).",
+                ans: "d²sp³ hybridization, Inner orbital octahedral, Paramagnetic (1 unpaired electron)."
+            },
+            {
+                chapter: "Chemical Thermodynamics",
+                sub: "CHEMISTRY",
+                year: "JEE MAIN 2023",
+                q: "For a reaction to be spontaneous at all temperatures, what must be the signs of ΔH and ΔS?",
+                hint: "Recall Gibbs Free Energy equation: ΔG = ΔH - TΔS. Spontaneity requires ΔG < 0.",
+                ans: "ΔH < 0 (Exothermic) and ΔS > 0 (Increase in entropy). Makes ΔG negative at all T."
+            },
+            {
+                chapter: "Solutions & Colligative",
+                sub: "CHEMISTRY",
+                year: "JEE MAIN 2024",
+                q: "Which 0.1 M aqueous solution will exhibit the maximum freezing point depression?",
+                hint: "Depression in freezing point ΔTf = i * Kf * m. Check van 't Hoff factor 'i' for complete ionization.",
+                ans: "0.1 M Al2(SO4)3 (van 't Hoff factor i = 5, maximum particles in solution)."
+            },
+            {
+                chapter: "Electrochemistry",
+                sub: "CHEMISTRY",
+                year: "JEE MAIN 2023",
+                q: "Write the Nernst equation for a cell reaction at 298 K and state how E_cell changes when product ion concentration increases.",
+                hint: "E_cell = E°_cell - (0.0591/n) log ([Products]/[Reactants]).",
+                ans: "E_cell decreases when product concentration increases due to the negative logarithmic term."
+            },
+
+            // Mathematics PYQs
+            {
+                chapter: "Definite Integration",
+                sub: "MATHS",
+                year: "JEE MAIN 2024",
+                q: "Evaluate the integral I = ∫_0^(π/2) (sin^5 x) / (sin^5 x + cos^5 x) dx.",
+                hint: "Apply King's Property: ∫_a^b f(x)dx = ∫_a^b f(a+b-x)dx. Add original and transformed integrals.",
+                ans: "I = π / 4. (The sum gives 2I = ∫_0^(π/2) 1 dx = π/2 ➔ I = π/4)."
+            },
+            {
+                chapter: "Matrices & Determinants",
+                sub: "MATHS",
+                year: "JEE ADVANCED 2023",
+                q: "If A is a 3x3 non-singular matrix such that |A| = 5, what is the value of |adj(adj(A))|?",
+                hint: "Use determinant property: |adj(A)| = |A|^(n-1). For adj(adj(A)), formula is |A|^((n-1)²).",
+                ans: "|adj(adj(A))| = 5^((3-1)²) = 5^4 = 625."
+            },
+            {
+                chapter: "Vector & 3D Geometry",
+                sub: "MATHS",
+                year: "JEE MAIN 2024",
+                q: "Find the shortest distance between the skew lines r = a1 + λ b1 and r = a2 + μ b2.",
+                hint: "Shortest distance formula = | (a2 - a1) . (b1 x b2) | / | b1 x b2 |.",
+                ans: "SD = |(a2 - a1) · (b1 × b2)| / |b1 × b2|. Zero distance implies intersecting lines."
+            },
+            {
+                chapter: "Limits & Continuity",
+                sub: "MATHS",
+                year: "JEE MAIN 2023",
+                q: "Evaluate lim_(x➔0) (1 - cos(2x)) / x².",
+                hint: "Use double angle formula 1 - cos(2x) = 2 sin²x, or apply L'Hôpital's Rule twice.",
+                ans: "Limit = 2. (Shortcut: 1 - cos(θ) ≈ θ²/2 near 0 ➔ 2x²/x² = 2)."
+            },
+            {
+                chapter: "Probability",
+                sub: "MATHS",
+                year: "JEE MAIN 2024",
+                q: "A pair of fair dice is rolled. If the sum is known to be even, what is the conditional probability that the sum is 8?",
+                hint: "Even sums have 18 outcomes. Favorable outcomes for sum = 8 are (2,6), (3,5), (4,4), (5,3), (6,2) = 5.",
+                ans: "P(Sum=8 | Sum is Even) = 5 / 18."
+            }
+        ];
+
+        let pyqIdx = 0;
+
+        function populatePYQDropdown() {
+            const select = document.getElementById('pyqChapterSelect');
+            select.innerHTML = '';
+            CHAPTER_PYQ_VAULT.forEach((item, index) => {
+                const opt = document.createElement('option');
+                opt.value = index;
+                opt.innerText = `[${item.sub}] ${item.chapter} (${item.year})`;
+                select.appendChild(opt);
+            });
+        }
+
+        function renderPYQ() {
+            const pyq = CHAPTER_PYQ_VAULT[pyqIdx];
+            document.getElementById('pyqSubBadge').innerText = pyq.sub;
+            document.getElementById('pyqChapterTag').innerText = `[ ${pyq.chapter.toUpperCase()} ]`;
+            document.getElementById('pyqYearTag').innerText = pyq.year;
+            document.getElementById('pyqQuestion').innerText = pyq.q;
+            document.getElementById('pyqHintText').innerText = pyq.hint;
+            document.getElementById('pyqAnsText').innerText = pyq.ans;
+            document.getElementById('pyqHintBox').classList.add('hidden');
+            document.getElementById('pyqAnswerBox').classList.add('hidden');
+            document.getElementById('pyqChapterSelect').value = pyqIdx;
+        }
+
+        function onPYQChapterSelect() {
+            audio.playLaserClick();
+            pyqIdx = parseInt(document.getElementById('pyqChapterSelect').value) || 0;
+            renderPYQ();
+        }
+
+        function togglePYQHint() {
+            audio.playLaserClick();
+            document.getElementById('pyqHintBox').classList.toggle('hidden');
+        }
+
+        function togglePYQAnswer() {
+            audio.playLaserClick();
+            document.getElementById('pyqAnswerBox').classList.toggle('hidden');
+        }
+
+        function skipPYQ() {
+            audio.playLaserClick();
+            pyqIdx = (pyqIdx + 1) % CHAPTER_PYQ_VAULT.length;
+            renderPYQ();
+        }
+
+        function nextPYQ() {
+            audio.playLaserClick();
+            pyqIdx = (pyqIdx + 1) % CHAPTER_PYQ_VAULT.length;
+            renderPYQ();
+        }
+
+        populatePYQDropdown();
+        renderPYQ();
+
+        // --------------------------------------------------------------------------
+        // 7. FOCUS POMODORO TIMER
+        // --------------------------------------------------------------------------
+        let pomoSecs = 50 * 60;
+        let pomoTimer = null;
+        let isPomoRunning = false;
+
+        function updatePomoClock() {
+            const m = Math.floor(pomoSecs / 60);
+            const s = pomoSecs % 60;
+            document.getElementById('pomoClock').innerText = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+        }
+
+        function togglePomoTimer() {
+            audio.playLaserClick();
+            const btn = document.getElementById('pomoBtn');
+            const badge = document.getElementById('pomoBadge');
+
+            if (!isPomoRunning) {
+                isPomoRunning = true;
+                btn.innerText = "PAUSE SESSION";
+                badge.innerText = "ACTIVE";
+                badge.className = "font-fira text-[10px] px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30";
+
+                pomoTimer = setInterval(() => {
+                    if (pomoSecs > 0) {
+                        pomoSecs--;
+                        updatePomoClock();
+                    } else {
+                        clearInterval(pomoTimer);
+                        audio.playAlarm();
+                        isPomoRunning = false;
+                        btn.innerText = "START SESSION";
+                        badge.innerText = "COMPLETE";
+                    }
+                }, 1000);
+            } else {
+                clearInterval(pomoTimer);
+                isPomoRunning = false;
+                btn.innerText = "RESUME SESSION";
+                badge.innerText = "PAUSED";
+                badge.className = "font-fira text-[10px] px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/30";
+            }
+        }
+
+        function setPomoTime(mins) {
+            audio.playLaserClick();
+            clearInterval(pomoTimer);
+            isPomoRunning = false;
+            pomoSecs = mins * 60;
+            updatePomoClock();
+            document.getElementById('pomoBtn').innerText = "START SESSION";
+            document.getElementById('pomoBadge').innerText = "READY";
+        }
+
+        function resetPomoTimer() {
+            audio.playLaserClick();
+            clearInterval(pomoTimer);
+            isPomoRunning = false;
+            pomoSecs = 50 * 60;
+            updatePomoClock();
+            document.getElementById('pomoBtn').innerText = "START SESSION";
+            document.getElementById('pomoBadge').innerText = "READY";
+        }
+
+        // --------------------------------------------------------------------------
+        // 8. MODAL CONTROLS
+        // --------------------------------------------------------------------------
+        function openModal(id) {
+            audio.playLaserClick();
+            document.getElementById(id).classList.remove('hidden');
+        }
+
+        function closeModal(id) {
+            audio.playLaserClick();
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        function onPresetChange() {
+            const val = document.getElementById('presetSelect').value;
+            if (val === 'custom') document.getElementById('customDateBlock').classList.remove('hidden');
+            else document.getElementById('customDateBlock').classList.add('hidden');
+        }
+
+        function applyTarget() {
+            audio.playLaserClick();
+            const val = document.getElementById('presetSelect').value;
+
+            if (val === 'custom') {
+                const name = document.getElementById('customTitle').value.trim() || "CUSTOM EXAM";
+                const dt = document.getElementById('customDatetime').value;
+                if (dt) {
+                    activeTarget = {
+                        title: `${name.toUpperCase()} T-MINUS`,
+                        badge: `SYS-TARGET: ${name.toUpperCase()}`,
+                        footer: `TARGET EXAM DATE: ${new Date(dt).toLocaleDateString()}`,
+                        target: new Date(dt),
+                        start: new Date()
+                    };
+                }
+            } else {
+                activeTarget = EXAM_PRESETS[val];
+            }
+
+            document.getElementById('mainTargetTitle').innerText = activeTarget.title;
+            document.getElementById('hudTargetTag').innerText = activeTarget.badge;
+            document.getElementById('targetFooterText').innerText = activeTarget.footer;
+
+            closeModal('targetModal');
+        }
+
+        // Initial setup render
+        renderSyllabus();
+    </script>
+</body>
+</html>
